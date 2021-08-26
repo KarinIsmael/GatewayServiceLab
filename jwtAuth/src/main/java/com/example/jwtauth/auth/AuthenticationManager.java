@@ -22,17 +22,14 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
     public Mono<Authentication> authenticate(Authentication authentication) {
         String authToken = authentication.getCredentials().toString();
         try {
-            //Check if signed with our secret key
             var claims = jwtUtil.getAllClaimsFromToken(authToken);
             if (claims == null) {
                 return Mono.empty();
             }
-            //Check so it hasn't expired
             Date expires = claims.getBody().getExpiration();
             if( expires.before(new Date(System.currentTimeMillis())) )
                 return Mono.empty();
 
-            //Get list of roles for this user
             ArrayList<String> perms = (ArrayList<String>) claims.getBody().get("authorities");
             var authorities = perms.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 

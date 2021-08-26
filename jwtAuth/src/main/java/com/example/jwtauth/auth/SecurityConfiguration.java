@@ -24,14 +24,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
 
-        // Disable default security.
+
         return http.httpBasic().disable()
                 .formLogin().disable()
                 .csrf().disable()
                 .logout().disable()
-                //No session
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-                // Add custom security.
                 .authenticationManager(this.authenticationManager)
                 .securityContextRepository(this.securityContextRepository)
                 .exceptionHandling()

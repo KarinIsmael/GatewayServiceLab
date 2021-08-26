@@ -38,7 +38,6 @@ public class JWTJavaWithPublicPrivateKey {
         try {
             Map<String, Object> claims = new HashMap<>();
 
-            // put your information into claim
             claims.put("id", "xxx");
             claims.put("role", "user");
             claims.put("created", new Date());
@@ -50,7 +49,6 @@ public class JWTJavaWithPublicPrivateKey {
         return token;
     }
 
-    // verify and get claims using public key
     private static void verifyToken(String token, PublicKey publicKey) {
         Claims claims;
         try {
