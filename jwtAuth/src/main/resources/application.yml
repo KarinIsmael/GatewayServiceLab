@@ -1,0 +1,28 @@
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+server:
+  port: 5050
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    consul:
+      discovery:
+        register: false
+        registerHealthCheck: false
+      config:
+        enabled: false
+      host: 192.168.1.98
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: pizza-service
+          uri: lb://pizza-service
+          predicates:
+            - Path=/pizzas/**
+          filters:
+            - RewritePath=/pizzas/(?<path>.*), /pizzas/$\{path}
